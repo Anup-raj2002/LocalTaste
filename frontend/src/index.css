@@ -1,0 +1,47 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #1c1410;
+  --color-clay: #241b15;
+  --color-clay-light: #33261c;
+  --color-turmeric: #e8a33d;
+  --color-chili: #d6432e;
+  --color-curry: #7a9459;
+  --color-cream: #f3e8d3;
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+body {
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(232, 163, 61, 0.07), transparent 40%),
+    radial-gradient(circle at 88% 65%, rgba(214, 67, 46, 0.06), transparent 45%);
+  min-height: 100vh;
+}
+
+.torn-top {
+  clip-path: polygon(
+    0% 10px, 3% 2px, 6% 10px, 9% 2px, 12% 10px, 15% 2px, 18% 10px, 21% 2px,
+    24% 10px, 27% 2px, 30% 10px, 33% 2px, 36% 10px, 39% 2px, 42% 10px, 45% 2px,
+    48% 10px, 51% 2px, 54% 10px, 57% 2px, 60% 10px, 63% 2px, 66% 10px, 69% 2px,
+    72% 10px, 75% 2px, 78% 10px, 81% 2px, 84% 10px, 87% 2px, 90% 10px, 93% 2px,
+    96% 10px, 100% 2px, 100% 100%, 0% 100%
+  );
+  padding-top: 22px;
+}
+
+.stamp {
+  transform: rotate(-6deg);
+}
+
+@keyframes chit-in {
+  from { opacity: 0; transform: translateY(10px) rotate(var(--tilt, 0deg)); }
+  to { opacity: 1; transform: translateY(0) rotate(var(--tilt, 0deg)); }
+}
+
+.chit-enter {
+  animation: chit-in 0.35s ease-out both;
+}
