@@ -7,7 +7,6 @@ from sklearn.neighbors import NearestNeighbors
 
 st.set_page_config(page_title="LocalTaste", layout="centered")
 
-# ---------- Load data + build recommender (same logic as recommender.py) ----------
 @st.cache_data
 def load_restaurants():
     df = pd.read_csv("restaurants_clean.csv")
@@ -36,11 +35,9 @@ def load_sentiment_model():
     vec = joblib.load("tfidf_vectorizer.pkl")
     return model, vec
 
-
 df = load_restaurants()
 vectorizer, cuisine_matrix, locality_models = build_recommender(df)
 sentiment_model, sentiment_vectorizer = load_sentiment_model()
-
 
 def recommend(user_locality, liked_names, top_k=5):
     liked_rows = df[df["name"].isin(liked_names)]
@@ -61,7 +58,6 @@ def recommend(user_locality, liked_names, top_k=5):
     return results.sort_values("similarity", ascending=False).head(top_k)
 
 
-# ---------- UI ----------
 st.title("LocalTaste")
 st.caption("Locality-aware restaurant recommendations, backed by review sentiment.")
 
@@ -86,7 +82,6 @@ if st.button("Get Recommendations"):
 
 st.divider()
 
-# ---------- Sentiment check tool ----------
 st.subheader("Check review sentiment")
 review_input = st.text_area("Paste a review to classify:")
 if st.button("Classify Sentiment"):

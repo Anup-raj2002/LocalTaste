@@ -7,15 +7,14 @@ df = pd.read_csv("reviews_labeled.csv")
 def final_clean(text):
     if not isinstance(text, str):
         return ""
-    text = text.encode("ascii", "ignore").decode("ascii")  # drop leftover mojibake/emoji bytes
-    text = re.sub(r"\?{1,}", "", text)                       # remove stray '?' marks
+    text = text.encode("ascii", "ignore").decode("ascii")
+    text = re.sub(r"\?{1,}", "", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 print("Cleaning text column...")
 df["review_text"] = df["review_text"].apply(final_clean)
 
-# drop rows that became empty or too short after cleaning
 df = df[df["review_text"].str.len() > 5]
 
 print("Final labeled review count:", len(df))
