@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 class RecommendRequest(BaseModel):
-    locality: str
+    locality: str | None = None
     liked_names: list
     top_k: int = 5
     use_gemini: bool = True
@@ -23,7 +23,7 @@ def localities():
 
 
 @router.get("/restaurants")
-def restaurants(locality: str):
+def restaurants(locality: str = ""):
     return {"restaurants": recommender_services.get_restaurants_in_locality(locality)}
 
 
@@ -40,27 +40,43 @@ def get_recommendations(req: RecommendRequest):
 @router.post("/parse-and-recommend")
 def parse_and_recommend(req: ParseRequest, use_gemini_explain: bool = True):
     t0 = time.perf_counter()
-    valid_localities = recommender_services.get_localities()
+    # Pass only specific neighborhoods to Gemini so it returns null when user says "Bangalore" or no locality
+    valid_localities = [
+        loc for loc in recommender_services.get_localities()
+        if loc != "All Bangalore (City-wide)"
+    ]
     valid_cuisines = recommender_services.get_valid_cuisines()
 
     parsed = gemini_service.parse_preferences(req.text, valid_localities, valid_cuisines)
     t1 = time.perf_counter()
 
-    if not parsed.get("locality"):
-        if parsed.get("error"):
-            msg = "The language service is unavailable right now. Please try again in a moment."
-        else:
-            msg = ("I couldn't tell which area of Bangalore you're in. "
-                   "Try adding a locality, for example: 'in Indiranagar' or 'near Koramangala'.")
-        return {"error": msg, "parsed": parsed}
+    if parsed.get("error"):
+        return {
+            "error": "The language service is unavailable right now. Please try again in a moment.",
+            "parsed": parsed,
+        }
 
+    # If no specific locality was mentioned (or user just said Bangalore), use Universal City-wide KNN
+    selected_locality = parsed.get("locality")
+    if not selected_locality:
+        parsed["locality"] = "All Bangalore (City-wide)"
+        parsed["is_city_wide"] = True
+    else:
+        parsed["is_city_wide"] = False
+
+    cuisines = parsed.get("cuisines") or []
     results = recommender_services.recommend_by_cuisines(
-        parsed["locality"], parsed["cuisines"], top_k=5
+        selected_locality, cuisines, top_k=5
     )
+
+    # Display tag in UI when user asked for general good food without specifying a cuisine
+    if not cuisines:
+        parsed["cuisines"] = ["Chef's Popular Picks"]
+
     t2 = time.perf_counter()
 
     if use_gemini_explain and results:
-        explanations = gemini_service.explain_recommendations(parsed["cuisines"], results)
+        explanations = gemini_service.explain_recommendations(cuisines, results)
         for r, e in zip(results, explanations):
             r["explanation"] = e
     t3 = time.perf_counter()

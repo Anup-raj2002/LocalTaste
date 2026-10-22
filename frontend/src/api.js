@@ -15,6 +15,5 @@ export async function classifySentiment(text) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text }),
   });
-  const data = await res.json();
-  return data.label;
+  return res.json();
 }

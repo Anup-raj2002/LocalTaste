@@ -1,0 +1,7 @@
+Model,Accuracy,Weighted F1,Neg precision,Neg recall,Neg F1,"Confusion [[TP_pos,FN_pos],[FN_neg,TP_neg]]"
+MultinomialNB,92.38,92.08,93.7,75.1,83.4,"[[15953, 280], [1380, 4159]]"
+ComplementNB (selected),92.33,92.45,81.7,90.0,85.7,"[[15116, 1117], [552, 4987]]"
+Logistic Regression,94.59,94.53,91.9,86.4,89.0,"[[15809, 424], [754, 4785]]"
+Logistic Regression (balanced),93.87,93.98,84.1,93.5,88.6,"[[15257, 976], [358, 5181]]"
+Linear SVM,94.59,94.57,90.7,87.8,89.2,"[[15732, 501], [676, 4863]]"
+Linear SVM (balanced),93.96,94.05,84.7,93.0,88.7,"[[15303, 930], [386, 5153]]"

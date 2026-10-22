@@ -7,8 +7,15 @@ function RecTicket({ rec, index }) {
       className="chit-enter torn-top bg-cream text-ink rounded-b-md px-5 pb-5 shadow-lg"
       style={{ "--tilt": tilt, transform: `rotate(${tilt})`, animationDelay: `${index * 80}ms` }}
     >
-      <div className="flex items-start justify-between gap-3 border-b border-ink/15 pb-2 mb-2">
-        <h3 className="font-display text-xl font-semibold leading-tight">{rec.name}</h3>
+      <div className="flex items-start justify-between gap-3 border-b border-ink/15 pb-2 mb-1.5">
+        <div>
+          <h3 className="font-display text-xl font-semibold leading-tight">{rec.name}</h3>
+          {rec.location && (
+            <p className="font-mono text-[0.65rem] text-ink/55 mt-0.5">
+              📍 {rec.location}
+            </p>
+          )}
+        </div>
         <ChiliMeter similarity={rec.similarity} />
       </div>
 

@@ -43,7 +43,7 @@ function FindFoodTab() {
         <textarea
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="I'm in Koramangala and I love spicy North Indian food and biryani..."
+          placeholder="I'm in Koramangala craving spicy biryani... (or just 'I am in Bangalore craving South Indian & filter coffee' for city-wide top picks!)"
           rows={3}
           className="w-full bg-transparent text-ink placeholder-ink/40 border-b-2 border-dashed border-ink/25 focus:outline-none focus:border-chili text-sm py-2 resize-none font-body"
         />
@@ -61,7 +61,8 @@ function FindFoodTab() {
       {parsed && (
         <div className="flex flex-wrap gap-2 justify-center mb-6">
           <span className="font-mono text-xs bg-clay-light text-turmeric px-3 py-1 rounded-full border border-turmeric/30">
-            📍 {parsed.locality}
+            {parsed.is_city_wide ? "🌆 " : "📍 "}
+            {parsed.locality}
           </span>
           {parsed.cuisines.map((c) => (
             <span key={c} className="font-mono text-xs bg-clay-light text-curry px-3 py-1 rounded-full border border-curry/30">
@@ -78,7 +79,7 @@ function FindFoodTab() {
           </h2>
           <div className="grid gap-6 sm:grid-cols-2">
             {recommendations.map((rec, i) => (
-              <RecTicket key={rec.name} rec={rec} index={i} />
+              <RecTicket key={`${rec.name}-${rec.location}`} rec={rec} index={i} />
             ))}
           </div>
         </section>

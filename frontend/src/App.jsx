@@ -29,14 +29,14 @@ function App() {
             🍽 Find Food
           </button>
           <button
-            onClick={() => setActiveTab("taste")}
+            onClick={() => setActiveTab("feedback")}
             className={`font-mono text-xs uppercase tracking-widest px-5 py-2.5 rounded-full border transition ${
-              activeTab === "taste"
+              activeTab === "feedback"
                 ? "bg-turmeric border-turmeric text-ink"
                 : "bg-transparent border-cream/20 text-cream/50 hover:border-cream/40"
             }`}
           >
-            📝 Taste Test
+            📝 Feedback
           </button>
         </div>
 

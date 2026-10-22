@@ -11,4 +11,4 @@ def predict_sentiment(text: str) -> str:
     if not text or not text.strip():
         return "unknown"
     vec = _vectorizer.transform([text])
-    return _model.predict(vec)[0]
+    return str(_model.predict(vec)[0])
